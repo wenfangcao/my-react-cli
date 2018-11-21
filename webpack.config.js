@@ -8,7 +8,7 @@ const path = require('path')
 
 module.exports = {
   mode: 'none',
-  entry: __dirname + "/src/index.js",
+  entry: __dirname + "/src/main.js",
   output: {
     path: path.resolve(__dirname,"build"),
     filename: "app-[hash].js",
@@ -16,20 +16,19 @@ module.exports = {
   },
   module: {
     rules: [
-      {test: /(\.jsx|\.js)$/,use: {loader: "babel-loader"},exclude: /node_modules/},
+      {test: /(\.jsx|\.js)$/,use: {loader: "babel-loader", options: {presets: ['es2015', 'react']}},exclude: /node_modules/},
       {test: /\.css$/,use: [{loader: "style-loader"}, {loader: "css-loader"}]},
-      {test:/\.vue$/,loader:'vue-loader'},
       {test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'},
     ]
   },
   resolve: {
-    extensions: ['.vue','.js',".css",'jsx']
+    extensions: ['.js','.css','jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.template.html',
-      inject: 'head',
+      inject: 'body',
     }),
     new CleanWebpackPlugin(
       ['dist/main.*.js','dist/manifest.*.js',],　 //匹配删除的文件
