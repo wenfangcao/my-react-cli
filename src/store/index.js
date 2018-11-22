@@ -18,7 +18,9 @@ const initialState = {
 const reducer = function(state=initialState, action) {
   switch (action.type) {
     case 'ADD': { 
-      console.log(111)
+      state.cart = [
+        {now: 'heiheiheih'}
+      ]
     }
     default:
       return state

@@ -3,12 +3,12 @@ import React, { Component } from 'react'
 export default class Home extends Component {
 
   componentWillMount() {
-    console.log(this)
+    console.log('aaa')
   }
 
   render() {
     return (
-      <div>home</div>
+      <div onClick={()=>{this.props.history.push('/login')}}>home</div>
     )
   }
 }
