@@ -8,17 +8,25 @@ const path = require('path')
 
 module.exports = {
   mode: 'none',
-  entry: __dirname + "/src/app.js",
+  entry: {
+    app: __dirname + "/src/app.js",
+    vendor_react: ['react'],
+  },
   output: {
     path: path.resolve(__dirname,"build"),
     filename: "app-[hash].js",
     hashDigestLength: 8,
+    chunkFilename: '[name].js',
   },
   module: {
     rules: [
-      {test: /(\.jsx|\.js)$/,use: {loader: "babel-loader", options: {presets: ['es2015', 'react']}},exclude: /node_modules/},
-      {test: /\.css$/,use: [{loader: "style-loader"}, {loader: "css-loader"}]},
-      {test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'},
+      { test: /(\.jsx|\.js)$/, use: {loader: "babel-loader", options: {presets: ['es2015', 'react']}}, exclude: /node_modules/},
+      { test: /(\.css|\.stylus|\.styl)$/, use: ExtractTextPlugin.extract({
+        use: ['css-loader','stylus-loader'],
+        fallback: 'style-loader'
+      }) },
+      // {test: /(\.css|\.styl)$/, use: [{loader: "style-loader"}, {loader: "css-loader"}, {loader: "stylus-loader"}]},
+      { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'},
     ]
   },
   resolve: {
@@ -48,7 +56,20 @@ module.exports = {
         ignore: ['.*']
       }
     ]),
+    new ExtractTextPlugin('css/[name]-[hash].css'),
+    
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+            name: "commons",
+            chunks: "initial",
+            minChunks: 2
+        }
+      }
+    }
+  },
   devtool:'eval-source-map',
   devServer: {
     contentBase: path.resolve(__dirname, "build"),

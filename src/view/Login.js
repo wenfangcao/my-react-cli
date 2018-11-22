@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../css/login.styl'
 
 export default class Login extends Component {
   constructor() {
@@ -17,8 +18,9 @@ export default class Login extends Component {
     return (
       <div>
         <div>login</div>
-        <button onClick={() => this.toHome()}>去home</button>
+        <button className="ss" onClick={() => this.toHome()}>去home</button>
       </div>
     )
   }
 }
+
